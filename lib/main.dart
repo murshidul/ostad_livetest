@@ -3,7 +3,7 @@ abstract class Role {
   void displayRole();
 }
 
-// Class Person
+// Base class Person
 class Person implements Role {
   // Attributes
   final String name;
@@ -25,22 +25,53 @@ class Person implements Role {
   }
 }
 
-// Class Student extends Person and implements Role
+// Class Student extends Person
 class Student extends Person {
-  Student({required String name, required int age, required String address})
-      : super(name: name, age: age, address: address);
+  // Additional attributes
+  final String studentID;
+  final String grade;
+  final List<double> courseScores;
 
+  // Constructor
+  Student({
+    required String name,
+    required int age,
+    required String address,
+    required this.studentID,
+    required this.grade,
+    required this.courseScores,
+  }) : super(name: name, age: age, address: address);
+
+  // Override displayRole method
   @override
   void displayRole() {
     print("Role: Student");
   }
+
+  // Method to calculate the average score
+  double calculateAverageScore() {
+    if (courseScores.isEmpty) return 0.0;
+    double totalScore = courseScores.reduce((a, b) => a + b);
+    return totalScore / courseScores.length;
+  }
 }
 
-// Class Teacher extends Person and implements Role
+// Class Teacher extends Person
 class Teacher extends Person {
-  Teacher({required String name, required int age, required String address})
-      : super(name: name, age: age, address: address);
+  // Additional attributes
+  final String teacherID;
+  final List<String> coursesTaught;
 
+  // Constructor
+  Teacher({
+    required String name,
+    required int age,
+    required String address,
+    required this.teacherID,
+    required this.coursesTaught,
+  }) : super(name: name, age: age, address: address);
+
+  // Override displayRole method
   @override
   void displayRole() {
     print("Role: Teacher");
@@ -50,16 +81,36 @@ class Teacher extends Person {
 // Main function
 void main() {
   // Create a Student object
-  Person student = Student(name: "Alice", age: 20, address: "123 Maple Street");
+  Student student = Student(
+    name: "Alice",
+    age: 20,
+    address: "123 Maple Street",
+    studentID: "S001",
+    grade: "A",
+    courseScores: [85, 90, 78, 92],
+  );
+  print("Student Info:");
   print("Name: ${student.getName}");
   print("Age: ${student.getAge}");
   print("Address: ${student.getAddress}");
+  print("Student ID: ${student.studentID}");
+  print("Grade: ${student.grade}");
   student.displayRole();
+  print("Average Score: ${student.calculateAverageScore()}");
 
   // Create a Teacher object
-  Person teacher = Teacher(name: "Mr. John", age: 40, address: "456 Oak Avenue");
-  print("\nName: ${teacher.getName}");
+  Teacher teacher = Teacher(
+    name: "Mr. John",
+    age: 40,
+    address: "456 Oak Avenue",
+    teacherID: "T001",
+    coursesTaught: ["Math", "Physics", "Chemistry"],
+  );
+  print("\nTeacher Info:");
+  print("Name: ${teacher.getName}");
   print("Age: ${teacher.getAge}");
   print("Address: ${teacher.getAddress}");
+  print("Teacher ID: ${teacher.teacherID}");
+  print("Courses Taught: ${teacher.coursesTaught.join(', ')}");
   teacher.displayRole();
 }
